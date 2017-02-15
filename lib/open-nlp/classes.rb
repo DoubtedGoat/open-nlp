@@ -6,6 +6,8 @@ class OpenNLP::SimpleTokenizer < OpenNLP::Base; end
 
 class OpenNLP::TokenizerME < OpenNLP::Base; end
 
+class OpenNLP::DictionaryLemmatizer < OpenNLP::Base; end
+
 class OpenNLP::POSTaggerME < OpenNLP::Base
 
   unless RUBY_PLATFORM =~ /java/

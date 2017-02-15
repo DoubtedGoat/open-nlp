@@ -11,18 +11,16 @@ module OpenNLP::Bindings
   extend BindIt::Binding
 
   # Load the JVM with a minimum heap size of 512MB,
-  # and a maximum heap size of 1024MB.
-  self.jvm_args = ['-Xms512M', '-Xmx1024M']
+  # and a maximum heap size of 4096MB.
+  self.jvm_args = ['-Xms512M', '-Xmx4096M']
 
   # Turn logging off by default.
   self.log_file = nil
 
   # Default JARs to load.
   self.default_jars = [
-    'jwnl-1.3.3.jar',
-    'opennlp-tools-1.5.2-incubating.jar',
-    'opennlp-maxent-3.0.2-incubating.jar',
-    'opennlp-uima-1.5.2-incubating.jar'
+    'opennlp-uima-1.7.1.jar',
+    'opennlp-tools-1.7.1.jar'
   ]
 
   # Default namespace.
@@ -44,6 +42,7 @@ module OpenNLP::Bindings
     ['SimpleTokenizer', 'opennlp.tools.tokenize'],
     ['Span', 'opennlp.tools.util'],
     ['TokenizerME', 'opennlp.tools.tokenize'],
+    ['DictionaryLemmatizer', 'opennlp.tools.lemmatizer'],
     
     # Generic Java classes.
     ['FileInputStream', 'java.io'],
@@ -123,11 +122,15 @@ module OpenNLP::Bindings
     models = OpenNLP::Config::DefaultModels[name]
     file ||= models[self.language]
     path = self.model_path + file
-    stream = FileInputStream.new(path)
     klass = OpenNLP::Config::NameToClass[name]
+    if klass[0] == 'FileInputStream' then
+      args = path
+    else
+      args = FileInputStream.new(path)
+    end
     load_class(*klass) unless const_defined?(klass[0])
     klass = const_get(klass[0])
-    model = klass.new(stream)
+    model = klass.new(args)
     self.model_files[name] = file
     self.models[name] = model
   end

@@ -8,7 +8,8 @@ module OpenNLP::Config
     parser: ['ParserModel', 'opennlp.tools.parser'],
     pos_tagger: ['POSModel', 'opennlp.tools.postag'],
     sentence_detector: ['SentenceModel', 'opennlp.tools.sentdetect'],
-    tokenizer: ['TokenizerModel', 'opennlp.tools.tokenize']
+    tokenizer: ['TokenizerModel', 'opennlp.tools.tokenize'],
+    lemmatizer: ['FileInputStream', 'java.io']
   }
   
   ClassToName = {
@@ -20,6 +21,7 @@ module OpenNLP::Config
     'Parser' => :parser,
     'SentenceDetectorME' => :sentence_detector,
     'TokenizerME' => :tokenizer,
+    'DictionaryLemmatizer' => :lemmatizer
   }
 
   DefaultModels = {
@@ -58,13 +60,16 @@ module OpenNLP::Config
       dutch: 'nl-token.bin',
       portuguese: 'pt-token.bin',
       swedish: 'se-token.bin'
+    },
+    lemmatizer: {
+      english: 'en-lemmatizer.dict'
     }
   }
 
   # Classes that require a model as first argument to constructor.
   RequiresModel = [
     'SentenceDetectorME', 'NameFinderME', 'DictionaryDetokenizer',
-    'TokenizerME', 'ChunkerME', 'POSTaggerME', 'Parser'
+    'TokenizerME', 'ChunkerME', 'POSTaggerME', 'Parser', 'DictionaryLemmatizer'
   ]
 
   
